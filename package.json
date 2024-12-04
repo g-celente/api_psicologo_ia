@@ -6,7 +6,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch src/server.js"
+    "dev": "node --watch src/server.js",
+    "vercel-build": "npx prisma migrate deploy",
+    "migrate": "npx prisma migrate dev",
+    "postinstall": "npx prisma generate",
+    "generate": "npx prisma generate",
+    "studio": "npx prisma studio"
   },
   "keywords": [],
   "author": "",
