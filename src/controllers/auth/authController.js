@@ -1,5 +1,6 @@
 import Joi from "joi";
 import authService from "../../models/auth/authService.js";
+import jwt from "jsonwebtoken";
 
 const authController = {
     
@@ -47,7 +48,10 @@ const authController = {
         try {
             const user = await authService.login(req.body)
             if (user) {
-                return res.status(200).json({ auth:true })
+                const token = jwt.sign({ userId:user.id}, "guizao12345", {
+                    expiresIn: 5000
+                })
+                return res.status(200).json({ auth:true, token:token})
             } 
             return res.status(400).json({"error":"usuário ou senha inválidos"})
 
