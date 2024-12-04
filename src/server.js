@@ -5,11 +5,7 @@ import routes from "./routes.js";
 const app = express();
 
 // Configurando o middleware CORS para permitir requisições de qualquer origem
-app.use(cors({
-  origin: 'http://localhost:5173',  // Define a origem permitida (frontend rodando no localhost:5173)
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
-  allowedHeaders: ['Content-Type', 'Authorization'],  // Cabeçalhos permitidos
-}));
+app.use(cors());
 
 // Middleware para permitir que a aplicação parseie JSON nas requisições
 app.use(express.json());
