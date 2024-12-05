@@ -58,7 +58,10 @@ const authController = {
         } catch (error) {
             return res.status(500)
         }
-    }   
+    },
+    logout: async (req, res) => {
+        return res.status(200).json({ auth:false, token:null})
+    }
 }
 
 export default authController

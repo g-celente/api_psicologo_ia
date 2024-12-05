@@ -15,6 +15,27 @@ const userController = {
             console.log('Erro ao tentar receber os usuários', error)
             return res.status(500)
         }
+    },
+
+    Perfil: async (req, res) => {
+        try {
+            const userId = req.userId
+            
+            const user = await userService.perfil(userId)
+
+            if (!user) {
+                return res.status(404).json({ error:"usuario não encontrado"})
+            }
+
+            res.status(200).json({
+                id: user.id,
+                nome:user.nome,
+                email: user.email,
+            })
+            
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 

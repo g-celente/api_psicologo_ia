@@ -11,7 +11,7 @@ async function verifyJwt(req, res, next) {
 
     jwt.verify(token, "guizao12345", (err, decoded) => {
         if (err) {
-            return res.status('401').json({ "error": "permissão negada "})
+            return res.status('401').json({ "error": "permissão negada ", "error": err})
         }
 
         req.userId = decoded.userId;

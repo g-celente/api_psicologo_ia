@@ -16,5 +16,7 @@ routes.post('/login', authController.login)
 
 //ROTAS PARA USUÁRIOS
 routes.get('/users', verifyJwt, userController.getUsers)
+routes.post('/logout', verifyJwt, authController.logout)
+routes.get('/perfil', verifyJwt, userController.Perfil)
 
 export default routes;
