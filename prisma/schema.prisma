@@ -18,6 +18,7 @@ model User {
   nome String 
   email String @db.VarChar(150)
   senha String @db.Text
+  user_img String?
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
 }

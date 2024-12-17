@@ -1,4 +1,5 @@
 import { prisma } from "../prisma.js";
+import bcrypt from 'bcrypt';
 
 const userService = {
     getUsers: async () => {
@@ -22,6 +23,45 @@ const userService = {
         }
 
         return user
+    },
+
+    addImage: async (img, id) => {
+        try {
+            const updateUser = await prisma.user.update({
+                where: {
+                    id:id
+                },
+                data: {
+                    user_img: img
+                }
+            })
+
+            return updateUser
+
+        } catch (err) {
+            console.error("Erro ao atualizar a imagem do usuário:", err);
+            return
+        }
+    },
+
+    alterPassword: async (id, data) => {
+        try {
+            const hashedPassword = await bcrypt.hash(data.newPassword, 10);
+
+            const password = await prisma.user.update({
+                where: {
+                    id:id
+                },
+                data: {
+                    senha:hashedPassword
+                }
+            })
+
+            return password;
+        } catch (err) {
+            console.log(`Erro ao tentar mudar a senha> ${err}`)
+            return
+        }
     }
 }
 

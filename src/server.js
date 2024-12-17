@@ -1,8 +1,16 @@
 import express from "express";
 import cors from "cors";  // Adicionando o pacote CORS para permitir requisições de outras origens
 import routes from "./routes.js";
+import dotenv from 'dotenv';
+import connectDB from '../mongodb/config.js';
+
+
+dotenv.config()
+connectDB()
 
 const app = express();
+
+app.use('/uploads', express.static('uploads'));
 
 // Configurando o middleware CORS para permitir requisições de qualquer origem
 app.use(cors());
