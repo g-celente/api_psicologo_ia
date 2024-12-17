@@ -31,7 +31,7 @@ routes.post('/api/sendMessage', verifyJwt, chatGpt.sendMessages)
 
 
 //ROTAS PARA PAGAMENTO
-routes.get('/api/compra-realizada', pagamentoController.compraRealizada)
+routes.post('/api/compra-realizada', pagamentoController.compraRealizada)
 
 
 export default routes;
