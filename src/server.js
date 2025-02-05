@@ -16,7 +16,13 @@ app.use('/uploads', express.static('uploads'));
 app.use(cors());
 
 // Middleware para permitir que a aplicação parseie JSON nas requisições
-app.use(express.json());
+app.use((req, res, next) => {
+  if (req.originalUrl === '/api/payment_success') {
+    next();  // Para essa rota específica, pula a aplicação do express.json()
+  } else {
+    express.json()(req, res, next);  // Para todas as outras rotas, aplica o middleware normalmente
+  }
+});
 
 // Definindo as rotas da aplicação
 app.use(routes);

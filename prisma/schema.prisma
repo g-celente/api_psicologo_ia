@@ -14,11 +14,54 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  nome String 
-  email String @db.VarChar(150)
-  senha String @db.Text
-  user_img String?
-  createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  id          Int          @id @default(autoincrement())
+  nome        String
+  email       String       @db.VarChar(150)
+  senha       String       @db.Text
+  user_img    String?      // Foto de perfil (opcional)
+  customer_id String       // ID do cliente (para integrar com a Stripe)
+  address     Address?     // Relacionamento com o endereço (opcional)
+  subscription Subscription? // Relacionamento 1:1 com a assinatura
+  createdAt   DateTime     @default(now())
+  updateAt    DateTime     @updatedAt
+}
+
+model Address {
+  id          Int      @id @default(autoincrement())
+  city        String?
+  country     String?
+  line1       String?
+  line2       String?
+  postal_code String?
+  state       String?
+  userId      Int?     @unique
+  user        User?    @relation(fields: [userId], references: [id])
+}
+
+model Subscription {
+  id                     Int       @id @default(autoincrement())
+  user_id                Int       @unique// Relaciona com a tabela 'users'
+  plan_id                Int       // Relaciona com a tabela 'plans'
+  stripe_subscription_id String?  // ID da assinatura gerada pela Stripe
+  start_date            DateTime  // Data de início da assinatura
+  end_date              DateTime  // Data de expiração
+  status                String    @default("active") // Status da assinatura (active, cancelled, expired)
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  user                  User      @relation(fields: [user_id], references: [id])
+  plan                  Plan      @relation(fields: [plan_id], references: [id])
+}
+
+model Plan {
+  id                  Int             @id @default(autoincrement())
+  name                String
+  id_stripe           String          
+  description         String?
+  session_duration    Int             // Duração da sessão em minutos (Ex: 30, 50)
+  max_sessions_per_day Int            // Número máximo de sessões por dia
+  price               Decimal         // Preço do plano
+  subscriptions       Subscription[]  // Relacionamento com as assinaturas
+  created_at          DateTime        @default(now())
+  updated_at          DateTime        @updatedAt
 }

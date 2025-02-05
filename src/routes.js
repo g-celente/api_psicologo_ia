@@ -3,9 +3,10 @@ import authController from "./controllers/auth/authController.js";
 import userController from "./controllers/main/userController.js";
 import verifyJwt from "./middlewares/verifyToken.js";
 import chatGpt from "./controllers/main/conversationController.js";
-import pagamentoController from "./controllers/main/pagamentoController.js";
+import paymentController from "./controllers/payment/pagamentoController.js";
 import multer from "multer";
 import storage from './config.js';
+import express from "express"
 
 const upload = multer({ storage: storage });
 const routes = Router();
@@ -15,7 +16,6 @@ routes.get('/', (req, res) => {
 });
 
 //ROTAS PARA AUTENTICAÇÃO
-routes.post('/register', authController.signUp)
 routes.post('/login', authController.login)
 
 //ROTAS PARA USUÁRIOS
@@ -31,7 +31,7 @@ routes.post('/api/sendMessage', verifyJwt, chatGpt.sendMessages)
 
 
 //ROTAS PARA PAGAMENTO
-routes.post('/api/compra-realizada', pagamentoController.compraRealizada)
+routes.post('/api/payment_success', express.raw({type: 'application/json'}), paymentController.paymentSuccess)
 
 
 export default routes;

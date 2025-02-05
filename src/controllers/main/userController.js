@@ -23,21 +23,24 @@ const userController = {
         try {
             const userId = req.userId
             
-            const user = await userService.perfil(userId)
+            const { user, address} = await userService.perfil(userId)
 
-            if (!user) {
+            if (!user || !address) {
                 return res.status(404).json({ error:"usuario não encontrado"})
             }
 
-            const img = user.user_img.replace(/\\/g, '/');
+            const img = user.user_img ? user.user_img.replace(/\\/g, '/') : null;
 
-            const imageUrl = `http://localhost:3000/${img}`
+            const imageUrl = img ? `http://localhost:3000/${img}` : null;
 
             res.status(200).json({
                 id: user.id,
                 nome:user.nome,
                 email: user.email,
-                user_img: imageUrl
+                user_img: imageUrl,
+                phone: user.phone,
+                customer: user.customer_id,
+                address: address
             })
             
         } catch (error) {

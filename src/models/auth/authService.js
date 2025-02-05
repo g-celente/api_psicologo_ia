@@ -3,37 +3,6 @@ import bcrypt from 'bcrypt';
 
 const authService = {
 
-    signUp: async (data) => {
-
-        const user = await prisma.user.findFirst({
-            where: {
-                email: data.email
-            }
-        })
-
-        if (user) {
-            return
-
-        }  
-        else {
-            try {
-                const hashedPassword = await bcrypt.hash(data.senha, 10);
-                const newUser = prisma.user.create({
-                    data: {
-                        nome: data.nome,
-                        email: data.email,
-                        senha: hashedPassword
-                    }
-                })
-                return newUser
-    
-            } catch (error) {
-                return error
-            }
-        }
-
-    },
-
     login: async (body) => {
         try {
             const user = await prisma.user.findFirst({
@@ -44,19 +13,32 @@ const authService = {
 
             if (!user) {
                 console.log('Usuário não encontrado');
-                return;
+                return { error: 'Usuário Não Encontrado'}
             }
 
             const passwordMatch = await bcrypt.compare(body.senha, user.senha);
 
             if (!passwordMatch) {
-                return;
+                console.log('Senha incorreta');
+                return { error: 'Senha incorreta' };
             }
 
-            return user;
+            const subscription = await prisma.subscription.findUnique({
+                where: {
+                    user_id: user.id
+                }
+            })
+
+            console.log(subscription)
+
+            if (!subscription) {
+                return {error: 'Usuário não inscrito no sistema'};
+            }
+
+            return {user, subscription};
+            
         } catch (error) {
             console.log('Error', error);
-            throw error;
         }
     },
 

@@ -18,11 +18,17 @@ const userService = {
             }
         })
 
-        if (!user) {
+        const address = await prisma.address.findUnique({
+            where: {
+                userId: user.id
+            }
+        })
+
+        if (!user || !address) {
             return
         }
 
-        return user
+        return { user, address }
     },
 
     addImage: async (img, id) => {
