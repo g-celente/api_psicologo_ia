@@ -31,7 +31,7 @@ const userController = {
 
             const img = user.user_img ? user.user_img.replace(/\\/g, '/') : null;
 
-            const imageUrl = img ? `http://localhost:3000/${img}` : null;
+            const imageUrl = img ? `https://api-psicologo-ia.vercel.app/${img}` : null;
 
             res.status(200).json({
                 id: user.id,
