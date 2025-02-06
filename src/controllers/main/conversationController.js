@@ -47,7 +47,7 @@ const chatGpt = {
             await conversationModel.addMessage(userId, assistantMessage, 'assistant');
         
             // Retorna a resposta do assistente ao front-end
-            return res.status(200).json({ response: assistantMessage });
+            return res.status(200).json(assistantMessage);
         
         } catch (error) {
             console.log('Erro ao enviar mensagem:', error);
