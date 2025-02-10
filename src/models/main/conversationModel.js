@@ -41,8 +41,7 @@ const conversationModel = {
     
           return newMessage;  // Retorna a nova mensagem adicionada
         } catch (error) {
-          console.error('Erro ao adicionar mensagem:', error);
-          throw new Error('Erro ao adicionar mensagem');
+          console.log('Erro ao adicionar mensagem:', error);
         }
     }
 }
